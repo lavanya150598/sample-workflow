@@ -1,0 +1,32 @@
+name: Deploy Application
+
+# Trigger the workflow manually
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment to deploy to (staging/production)'
+        required: true
+        default: 'staging'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: ${{ github.event.inputs.environment }}
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v3
+
+      - name: Set up environment
+        run: echo "Setting up ${{ github.event.inputs.environment }} environment"
+
+      - name: Deploy Application
+        run: |
+          if [ "${{ github.event.inputs.environment }}" == "production" ]; then
+            echo "Deploying to production environment..."
+            # Add production deployment commands here
+          else
+            echo "Deploying to staging environment..."
+            # Add staging deployment commands here
+          fi
